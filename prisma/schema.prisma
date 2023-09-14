@@ -10,11 +10,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// https://www.prisma.io/docs/concepts/components/prisma-schema
+
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
   posts Post[]
+}
+
+model SystemUser {
+  id          Int       @id @default(autoincrement())
+  username    String
+  password    String
+  nickname    String
+  remark      Int?
+  dept_id     Int
+  post_ids    String
+  email       String
+  mobile      Int
+  sex         Int
+  avatar      String?
+  status      Int
+  login_ip    String?
+  login_date  DateTime?
+  creator     String?
+  create_time DateTime  @default(now())
+  updater     String?
+  update_time DateTime  @default(now())
+  deleted     Int
+  tenant_id   Int?
 }
 
 model Post {
