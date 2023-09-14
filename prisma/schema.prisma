@@ -37,7 +37,7 @@ model SystemUser {
   creator     String?
   create_time DateTime  @default(now())
   updater     String?
-  update_time DateTime  @default(now())
+  update_time DateTime  @updatedAt
   deleted     Int
   tenant_id   Int?
 }
