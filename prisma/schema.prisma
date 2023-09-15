@@ -12,13 +12,7 @@ datasource db {
 
 // https://www.prisma.io/docs/concepts/components/prisma-schema
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
-}
-
+// 0开启 1禁用
 model SystemUser {
   id          Int       @id @default(autoincrement())
   username    String
@@ -31,22 +25,13 @@ model SystemUser {
   mobile      Int
   sex         Int
   avatar      String?
-  status      Int
+  status      Int       @default(0)
   login_ip    String?
   login_date  DateTime?
   creator     String?
   create_time DateTime  @default(now())
   updater     String?
   update_time DateTime  @updatedAt
-  deleted     Int
+  deleted     Int       @default(1)
   tenant_id   Int?
-}
-
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
 }
