@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsEmail, IsPhoneNumber, MinLength, MaxLength } from 'class-validator'
+import { IsInt, IsNotEmpty, IsEmail, IsMobilePhone, MinLength, MaxLength, Allow } from 'class-validator'
 
 // class-validator 包提供了基于装饰器声明的规则对对象做校验的功能
 // class-transformer 则是把一个普通对象转换为某个 class 的实例对象的
@@ -21,12 +21,13 @@ export class CreateUserDto {
   @IsNotEmpty()
   nickname: string;
 
+  @Allow()
   remark: string;
 
   @IsNotEmpty()
   dept_id: string;
 
-  @IsNotEmpty()
+  @Allow()
   post_ids: string;
 
   @IsNotEmpty()
@@ -34,13 +35,15 @@ export class CreateUserDto {
   email: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber()
+  @IsMobilePhone()
   mobile: string;
 
   @IsInt()
   sex: number;
 
+  @IsNotEmpty()
   avatar: string;
 
-  tenant_id: string;
+  @Allow()
+  tenant_id: number;
 }

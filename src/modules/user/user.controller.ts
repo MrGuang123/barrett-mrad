@@ -23,8 +23,8 @@ export class UserController {
 
     // 业务检验
 
-    return 'create user'
-    // return this.userService.create(createUserDto);
+    // return 'create user'
+    return this.userService.create(createUserDto);
   }
 
   @Get('list-all-simple')

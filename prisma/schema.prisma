@@ -18,11 +18,11 @@ model SystemUser {
   username    String
   password    String
   nickname    String
-  remark      Int?
-  dept_id     Int
+  remark      String?
+  dept_id     String
   post_ids    String
   email       String
-  mobile      Int
+  mobile      String
   sex         Int
   avatar      String?
   status      Int       @default(0)

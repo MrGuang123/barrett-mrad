@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt'
 
 import { PrismaService } from '../../framework/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -6,11 +7,30 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
+  private saltRounds: number;
   constructor(private prisma: PrismaService) {
-
+    this.saltRounds = 6
   }
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const { username, email, mobile } = createUserDto
+    // await this.validateUserForCreateOrUpdate(undefined, username, email, mobile)
+    // 开启用户状态
+    // 密码加密
+    // 插入用户
+    const salt = bcrypt.genSaltSync(this.saltRounds)
+    const password = bcrypt.hashSync(createUserDto.password, salt)
+    const userData = {
+      ...createUserDto,
+      password
+    }
+    console.log(bcrypt.compareSync('201112', password))
+    console.log('createUserDto', userData)
+    const user = await this.prisma.systemUser.create({
+      data: userData
+    })
+    // 插入关联岗位
+    // 返回用户ID
+    return user.id
   }
 
   findAll() {
@@ -32,11 +52,11 @@ export class UserService {
   /**
    * 私有工具方法
    */
-  private async validateUserForCreateOrUpdate(id: number, username: string, email: string, mobile: number) {
-    this.validateUserExists(id)
-    this.validateUsernameUnique(id, username)
-    this.validateEmailUnique(id, email)
-    this.validateMobileUnique(id, mobile)
+  private async validateUserForCreateOrUpdate(id: number | undefined, username: string, email: string, mobile: string) {
+    await this.validateUserExists(id)
+    await this.validateUsernameUnique(id, username)
+    await this.validateEmailUnique(id, email)
+    await this.validateMobileUnique(id, mobile)
     // 校验部门开启
     // 校验岗位开启
   }
@@ -101,7 +121,7 @@ export class UserService {
       throw new Error('user email exists')
     }
   }
-  private async validateMobileUnique(id: number, mobile: number) {
+  private async validateMobileUnique(id: number, mobile: string) {
     if (!mobile) {
       return
     }
