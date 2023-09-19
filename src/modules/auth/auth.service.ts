@@ -3,11 +3,31 @@ import { nanoid } from 'nanoid';
 
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
-  create(loginAuthDto: LoginAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private userService: UserService
+  ) { }
+  async login(loginAuthDto: LoginAuthDto) {
+    const { username, password } = loginAuthDto;
+    const user = await this.userService.findByUsername(username)
+
+    if (!user) {
+      throw new Error('user not found')
+    }
+
+    if (user.password !== password) {
+      throw new Error('password is error')
+    }
+
+    if (user.deleted) {
+      throw new Error('the user is deleted')
+    }
+    // TODO: 社交绑定（后续补充）
+    // 创建token，记录日志
+    return user.id;
   }
 
   async generateCaptcha() {

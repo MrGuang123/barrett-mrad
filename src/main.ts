@@ -1,9 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { VERSION_NEUTRAL, VersioningType, ValidationPipe } from '@nestjs/common'
+
+import { winstonLog } from './utils'
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: winstonLog
+  });
 
   // 开启数据传输对象验证
   app.useGlobalPipes(new ValidationPipe({

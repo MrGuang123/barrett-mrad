@@ -11,7 +11,14 @@ export class AuthController {
 
   @Post('login')
   login(@Body() loginDto: LoginAuthDto) {
-    return this.authService.create(loginDto);
+    // 后续添加验证码和uuid
+    if (enabledCaptcha) {
+
+    }
+    // 后续添加第三方登录功能
+
+    // 调用login的service
+    return this.authService.login(loginDto);
   }
 
   // TODO: 添加一个无需登录的装饰器
