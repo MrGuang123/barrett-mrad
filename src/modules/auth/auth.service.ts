@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UserService } from '../user/user.service';
+
+const nanoidObj = async () => await import('nanoid')
 
 @Injectable()
 export class AuthService {
@@ -32,8 +34,8 @@ export class AuthService {
 
   async generateCaptcha() {
     // TODO: canvas库不太好安装，后面想别的方案
-    const id = nanoid()
-    return 'captcha' + id
+    // const id = nanoidObj.nanoid()
+    return 'captcha'
   }
 
   findAll() {
